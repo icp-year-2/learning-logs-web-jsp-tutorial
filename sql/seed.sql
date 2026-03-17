@@ -7,8 +7,10 @@
 USE learning_logs;
 
 -- Clear existing data before seeding
-DELETE FROM entries;
-DELETE FROM topics;
+SET FOREIGN_KEY_CHECKS = 0;
+TRUNCATE TABLE entries;
+TRUNCATE TABLE topics;
+SET FOREIGN_KEY_CHECKS = 1;
 
 -- Sample topics
 INSERT INTO topics (name) VALUES
