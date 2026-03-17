@@ -6,6 +6,10 @@
 
 USE learning_logs;
 
+-- Clear existing data before seeding
+DELETE FROM entries;
+DELETE FROM topics;
+
 -- Sample topics
 INSERT INTO topics (name) VALUES
 ('Python'),
