@@ -279,6 +279,62 @@ With redirect (good):
 
 ---
 
+## What Changed in `pom.xml`
+
+In Weeks 1–3, the project was a **standalone Java app** — it had a `main()` method and ran with `exec-maven-plugin`. Now it's a **web application** deployed to Tomcat, so `pom.xml` changes significantly.
+
+### Packaging
+
+```xml
+<!-- Week 3: default JAR (standalone app) -->
+<packaging>jar</packaging>   <!-- implicit, not written -->
+
+<!-- Week 4: WAR (web archive for Tomcat) -->
+<packaging>war</packaging>
+```
+
+A `.war` file is like a `.jar` but structured for web servers — it contains your compiled classes, JSP files, CSS, images, and all dependency JARs bundled in `WEB-INF/lib/`.
+
+### New Dependencies
+
+| Dependency | What It Does | Scope |
+|------------|-------------|-------|
+| `mysql-connector-j` | MySQL JDBC driver (same as Week 2) | runtime |
+| **`jakarta.servlet-api`** | `HttpServlet`, `@WebServlet`, `HttpServletRequest` | `provided` — Tomcat has this |
+| **`jakarta.servlet.jsp-api`** | JSP compilation support | `provided` — Tomcat has this |
+| **`jakarta.servlet.jsp.jstl-api`** | JSTL tags: `<c:forEach>`, `<c:if>` | runtime |
+| **`jakarta.servlet.jsp.jstl`** | JSTL implementation (Glassfish) | runtime |
+
+> **What does `provided` mean?** Tomcat already includes the Servlet and JSP APIs. Marking them `provided` means Maven uses them for compilation but does **not** bundle them into the WAR — Tomcat provides them at runtime. Without `provided`, you'd get version conflicts.
+
+### New Plugins
+
+| Plugin | Replaces | What It Does |
+|--------|----------|-------------|
+| **`maven-war-plugin`** | (default jar plugin) | Packages the project as a `.war` file |
+| **`cargo-maven3-plugin`** | (nothing — new) | Downloads and runs Tomcat automatically |
+
+Week 3 used `exec-maven-plugin` to run `main()`. Week 4 removes it — there's no `main()` method in a web app.
+
+### No Separate Tomcat Install Needed
+
+XAMPP provides **MySQL only** for this project — it does not include Tomcat. Instead of downloading and configuring Tomcat separately, the **Cargo Maven plugin** handles everything:
+
+```
+mvn clean package cargo:run
+```
+
+This single command:
+1. **Compiles** your Java code
+2. **Packages** everything into a `.war` file
+3. **Downloads** Tomcat 10.1 automatically (first run only, cached in `target/`)
+4. **Deploys** your WAR to the downloaded Tomcat
+5. **Starts** the server at `http://localhost:8080/learning-logs/`
+
+> **Why Tomcat 10.x?** Jakarta EE (the `jakarta.*` package namespace) requires Tomcat 10+. Older Tomcat versions (9 and below) use the `javax.*` namespace and won't work with our dependencies.
+
+---
+
 ## Getting Started
 
 ### Prerequisites
