@@ -212,10 +212,14 @@ learning-logs-web-jsp-tutorial/
 
 ### Setup Database
 
+> **Note:** You already have the `learning_logs` database from Week 2. Running the updated SQL below will **drop and recreate** the tables (the `entries` table now has new columns: `title`, `link`, `image`). Any data you added previously will be replaced with fresh sample data.
+
 1. Start **MySQL** in XAMPP (same as Week 2)
 2. Open **phpMyAdmin** (`http://localhost/phpmyadmin`)
-3. Run `sql/learninglog.sql` to create the database and tables
-4. Run `sql/seed.sql` to add sample data
+3. Click the `learning_logs` database on the left sidebar
+4. Click the **Import** tab at the top
+5. Click **Choose File** and select `sql/learninglog.sql` from the project — click **Import**
+6. Click the **Import** tab again, choose `sql/seed.sql` — click **Import**
 
 ### Build and Run
 
