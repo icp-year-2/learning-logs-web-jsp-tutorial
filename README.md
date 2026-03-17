@@ -443,7 +443,7 @@ Check off each task as you complete it:
 |---------|-------|-----|
 | 404 Not Found | WAR not deployed or wrong URL | Run `mvn clean package cargo:run`, visit `/learning-logs/` |
 | 500 Internal Server Error | Java exception in servlet | Check terminal output for stack trace |
-| ClassNotFoundException: JSTL | JSTL not in WAR | Run `mvn clean package`, check JSTL jars in `WEB-INF/lib/` |
+| ClassNotFoundException: JSTL | JSTL not in WAR | Run `mvn clean package` — Maven bundles JSTL jars into the WAR automatically |
 | CSS not loading | Wrong contextPath | Check `${pageContext.request.contextPath}` in CSS links |
 | Empty topic list | Database not set up | Run `sql/learninglog.sql` + `sql/seed.sql` in phpMyAdmin |
 | No suitable driver found | MySQL driver not loaded by Tomcat | Already fixed — see [why it changed](#why-databaseconnectionjava-changed-from-week-2) |
