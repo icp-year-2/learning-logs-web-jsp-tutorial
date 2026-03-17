@@ -206,28 +206,33 @@ learning-logs-web-jsp-tutorial/
 
 ### Prerequisites
 
-- **XAMPP** running (MySQL + Tomcat)
+- **XAMPP** running (MySQL only — for the database)
 - **IntelliJ IDEA Ultimate** (has built-in JSP, JSTL, and Servlet support)
 - **Java 25** installed
 
 ### Setup Database
 
-1. Open **phpMyAdmin** (`http://localhost/phpmyadmin`)
-2. Run `sql/learninglog.sql` to create the database and tables
-3. Run `sql/seed.sql` to add sample data
+1. Start **MySQL** in XAMPP (same as Week 2)
+2. Open **phpMyAdmin** (`http://localhost/phpmyadmin`)
+3. Run `sql/learninglog.sql` to create the database and tables
+4. Run `sql/seed.sql` to add sample data
 
-### Build and Deploy
+### Build and Run
 
 1. Open the project in IntelliJ
-2. Build the WAR: `mvn clean package`
-3. Copy the WAR file from `target/` to your Tomcat `webapps/` folder
-   - Rename it to `learning-logs.war` for a clean URL
-4. Start Tomcat (via XAMPP)
-5. Visit `http://localhost:8080/learning-logs/`
+2. Run from terminal or IntelliJ's Maven panel:
+   ```
+   mvn clean package cargo:run
+   ```
+3. Wait for: `Tomcat 10.x Embedded is started` (first run downloads Tomcat automatically)
+4. Visit `http://localhost:8080/learning-logs/`
+5. Press `Ctrl+C` to stop the server
 
 ### How to Preview
 
 Unlike Week 3 where you could right-click HTML files to open in browser, JSP files **must** be served through Tomcat. The servlet processes the request and forwards to the JSP — opening a `.jsp` file directly won't work.
+
+> **Note:** Every time you change Java code, stop the server (`Ctrl+C`) and run `mvn clean package cargo:run` again. CSS and JSP changes may not require a restart.
 
 ---
 
