@@ -69,104 +69,75 @@ import java.util.ArrayList;
 //   }
 //
 // ============================================================
-@WebServlet("/topic")
-public class TopicServlet extends HttpServlet {
 
-    private final TopicDao topicDao = new TopicDaoImpl();
+    // ============================================================
+    // TODO 8: doGet — List All Topics (Default Action)
+    // ============================================================
+    // When no action parameter is provided (action is null),
+    // fetch all topics from the database and display them.
+    //
+    // Steps:
+    //   1. Check: if action is null
+    //   2. Call topicDao.fetchAllTopics() to get all topics
+    //   3. Store the list in the request: setAttribute("topics", topics)
+    //   4. Forward to topiclist.jsp using RequestDispatcher
+    //
+    // CONCEPTS:
+    // - request.setAttribute("topics", topics) stores data that the
+    //   JSP can access via EL: ${topics} in the JSP reads this list.
+    // - RequestDispatcher.forward() sends the request to a JSP for
+    //   rendering. The browser URL does NOT change (server-side).
+    // - The JSP path starts with /WEB-INF/ because JSPs there are
+    //   protected from direct browser access — only servlets can
+    //   forward to them.
+    //
+    // The complete code:
+    //
+    //   if (action == null) {
+    //       ArrayList<Topic> topics = topicDao.fetchAllTopics();
+    //       request.setAttribute("topics", topics);
+    //       request.getRequestDispatcher("/WEB-INF/views/topiclist.jsp")
+    //              .forward(request, response);
+    //   }
+    //
+    // ============================================================
 
-    @Override
-    protected void doGet(HttpServletRequest request,
-                         HttpServletResponse response)
-            throws ServletException, IOException {
-
-        String action = request.getParameter("action");
-
-        // ============================================================
-        // TODO 8: doGet — List All Topics (Default Action)
-        // ============================================================
-        // When no action parameter is provided (action is null),
-        // fetch all topics from the database and display them.
-        //
-        // Steps:
-        //   1. Check: if action is null
-        //   2. Call topicDao.fetchAllTopics() to get all topics
-        //   3. Store the list in the request: setAttribute("topics", topics)
-        //   4. Forward to topiclist.jsp using RequestDispatcher
-        //
-        // CONCEPTS:
-        // - request.setAttribute("topics", topics) stores data that the
-        //   JSP can access via EL: ${topics} in the JSP reads this list.
-        // - RequestDispatcher.forward() sends the request to a JSP for
-        //   rendering. The browser URL does NOT change (server-side).
-        // - The JSP path starts with /WEB-INF/ because JSPs there are
-        //   protected from direct browser access — only servlets can
-        //   forward to them.
-        //
-        // The complete code:
-        //
-        //   if (action == null) {
-        //       ArrayList<Topic> topics = topicDao.fetchAllTopics();
-        //       request.setAttribute("topics", topics);
-        //       request.getRequestDispatcher("/WEB-INF/views/topiclist.jsp")
-        //              .forward(request, response);
-        //   }
-        //
-        // ============================================================
-        if (action == null) {
-            ArrayList<Topic> topics = topicDao.fetchAllTopics();
-            request.setAttribute("topics", topics);
-            request.getRequestDispatcher("/WEB-INF/views/topiclist.jsp")
-                   .forward(request, response);
-        }
-
-        // ============================================================
-        // TODO 9: doGet — Show Add or Edit Form
-        // ============================================================
-        // Handle two actions that show the topic form:
-        //   - action=new  -> empty form for adding
-        //   - action=edit -> pre-filled form for editing
-        //
-        // For "new":
-        //   Just forward to topicadd.jsp (no data needed — empty form)
-        //
-        // For "edit":
-        //   1. Get the topicid parameter from the URL
-        //   2. Parse it to int: Integer.parseInt(...)
-        //   3. Find the topic: topicDao.findTopicById(topicId)
-        //   4. Store it: request.setAttribute("topic", topic)
-        //   5. Forward to topicadd.jsp (form will pre-fill from ${topic})
-        //
-        // CONCEPT: The same JSP (topicadd.jsp) handles both add and
-        // edit. The difference is whether a "topic" attribute exists
-        // in the request. The JSP uses ${empty topic ? ...} to check.
-        //
-        // The complete code:
-        //
-        //   else if ("new".equals(action)) {
-        //       request.getRequestDispatcher("/WEB-INF/views/topicadd.jsp")
-        //              .forward(request, response);
-        //   }
-        //   else if ("edit".equals(action)) {
-        //       int topicId = Integer.parseInt(request.getParameter("topicid"));
-        //       Topic topic = topicDao.findTopicById(topicId);
-        //       request.setAttribute("topic", topic);
-        //       request.getRequestDispatcher("/WEB-INF/views/topicadd.jsp")
-        //              .forward(request, response);
-        //   }
-        //
-        // ============================================================
-        else if ("new".equals(action)) {
-            request.getRequestDispatcher("/WEB-INF/views/topicadd.jsp")
-                   .forward(request, response);
-        }
-        else if ("edit".equals(action)) {
-            int topicId = Integer.parseInt(request.getParameter("topicid"));
-            Topic topic = topicDao.findTopicById(topicId);
-            request.setAttribute("topic", topic);
-            request.getRequestDispatcher("/WEB-INF/views/topicadd.jsp")
-                   .forward(request, response);
-        }
-    }
+    // ============================================================
+    // TODO 9: doGet — Show Add or Edit Form
+    // ============================================================
+    // Handle two actions that show the topic form:
+    //   - action=new  -> empty form for adding
+    //   - action=edit -> pre-filled form for editing
+    //
+    // For "new":
+    //   Just forward to topicadd.jsp (no data needed — empty form)
+    //
+    // For "edit":
+    //   1. Get the topicid parameter from the URL
+    //   2. Parse it to int: Integer.parseInt(...)
+    //   3. Find the topic: topicDao.findTopicById(topicId)
+    //   4. Store it: request.setAttribute("topic", topic)
+    //   5. Forward to topicadd.jsp (form will pre-fill from ${topic})
+    //
+    // CONCEPT: The same JSP (topicadd.jsp) handles both add and
+    // edit. The difference is whether a "topic" attribute exists
+    // in the request. The JSP uses ${empty topic ? ...} to check.
+    //
+    // The complete code:
+    //
+    //   else if ("new".equals(action)) {
+    //       request.getRequestDispatcher("/WEB-INF/views/topicadd.jsp")
+    //              .forward(request, response);
+    //   }
+    //   else if ("edit".equals(action)) {
+    //       int topicId = Integer.parseInt(request.getParameter("topicid"));
+    //       Topic topic = topicDao.findTopicById(topicId);
+    //       request.setAttribute("topic", topic);
+    //       request.getRequestDispatcher("/WEB-INF/views/topicadd.jsp")
+    //              .forward(request, response);
+    //   }
+    //
+    // ============================================================
 
     // ============================================================
     // TODO 10: doPost — Add New Topic
@@ -227,128 +198,75 @@ public class TopicServlet extends HttpServlet {
     //   }
     //
     // ============================================================
-    @Override
-    protected void doPost(HttpServletRequest request,
-                          HttpServletResponse response)
-            throws ServletException, IOException {
 
-        String action = request.getParameter("action");
+    // ============================================================
+    // TODO 11: doPost — Edit Topic
+    // ============================================================
+    // Handle the "edit" action from the form submission.
+    //
+    // Steps:
+    //   1. Get topicid and topic name from the form
+    //   2. Parse topicid to int
+    //   3. Validate: if name is null or blank, set error, find
+    //      the original topic, and forward back to the form
+    //   4. Create a Topic object with the new name
+    //   5. Set the ID on it: topic.setId(topicId)
+    //   6. Call topicDao.updateTopic(topic)
+    //   7. Redirect to the topic list
+    //
+    // CONCEPT: For the error case, we need to re-set the "topic"
+    // attribute so the form stays in edit mode with the original
+    // data. Without this, the form would switch to add mode.
+    //
+    // The complete code:
+    //
+    //   else if ("edit".equals(action)) {
+    //       int topicId = Integer.parseInt(request.getParameter("topicid"));
+    //       String topicName = request.getParameter("topic");
+    //
+    //       if (topicName == null || topicName.trim().isEmpty()) {
+    //           request.setAttribute("error", "Topic name cannot be empty.");
+    //           Topic topic = topicDao.findTopicById(topicId);
+    //           request.setAttribute("topic", topic);
+    //           request.getRequestDispatcher("/WEB-INF/views/topicadd.jsp")
+    //                  .forward(request, response);
+    //           return;
+    //       }
+    //
+    //       Topic topic = new Topic(topicName.trim());
+    //       topic.setId(topicId);
+    //       topicDao.updateTopic(topic);
+    //       response.sendRedirect(request.getContextPath() + "/topic");
+    //   }
+    //
+    // ============================================================
 
-        if ("add".equals(action)) {
-            String topicName = request.getParameter("topic");
-
-            if (topicName == null || topicName.trim().isEmpty()) {
-                request.setAttribute("error", "Topic name cannot be empty.");
-                request.getRequestDispatcher("/WEB-INF/views/topicadd.jsp")
-                       .forward(request, response);
-                return;
-            }
-
-            boolean success = topicDao.insertTopic(new Topic(topicName.trim()));
-
-            if (!success) {
-                request.setAttribute("error", "Topic already exists.");
-                request.getRequestDispatcher("/WEB-INF/views/topicadd.jsp")
-                       .forward(request, response);
-                return;
-            }
-
-            response.sendRedirect(request.getContextPath() + "/topic");
-        }
-
-        // ============================================================
-        // TODO 11: doPost — Edit Topic
-        // ============================================================
-        // Handle the "edit" action from the form submission.
-        //
-        // Steps:
-        //   1. Get topicid and topic name from the form
-        //   2. Parse topicid to int
-        //   3. Validate: if name is null or blank, set error, find
-        //      the original topic, and forward back to the form
-        //   4. Create a Topic object with the new name
-        //   5. Set the ID on it: topic.setId(topicId)
-        //   6. Call topicDao.updateTopic(topic)
-        //   7. Redirect to the topic list
-        //
-        // CONCEPT: For the error case, we need to re-set the "topic"
-        // attribute so the form stays in edit mode with the original
-        // data. Without this, the form would switch to add mode.
-        //
-        // The complete code:
-        //
-        //   else if ("edit".equals(action)) {
-        //       int topicId = Integer.parseInt(request.getParameter("topicid"));
-        //       String topicName = request.getParameter("topic");
-        //
-        //       if (topicName == null || topicName.trim().isEmpty()) {
-        //           request.setAttribute("error", "Topic name cannot be empty.");
-        //           Topic topic = topicDao.findTopicById(topicId);
-        //           request.setAttribute("topic", topic);
-        //           request.getRequestDispatcher("/WEB-INF/views/topicadd.jsp")
-        //                  .forward(request, response);
-        //           return;
-        //       }
-        //
-        //       Topic topic = new Topic(topicName.trim());
-        //       topic.setId(topicId);
-        //       topicDao.updateTopic(topic);
-        //       response.sendRedirect(request.getContextPath() + "/topic");
-        //   }
-        //
-        // ============================================================
-        else if ("edit".equals(action)) {
-            int topicId = Integer.parseInt(request.getParameter("topicid"));
-            String topicName = request.getParameter("topic");
-
-            if (topicName == null || topicName.trim().isEmpty()) {
-                request.setAttribute("error", "Topic name cannot be empty.");
-                Topic topic = topicDao.findTopicById(topicId);
-                request.setAttribute("topic", topic);
-                request.getRequestDispatcher("/WEB-INF/views/topicadd.jsp")
-                       .forward(request, response);
-                return;
-            }
-
-            Topic topic = new Topic(topicName.trim());
-            topic.setId(topicId);
-            topicDao.updateTopic(topic);
-            response.sendRedirect(request.getContextPath() + "/topic");
-        }
-
-        // ============================================================
-        // TODO 12: doPost — Delete Topic
-        // ============================================================
-        // Handle the "delete" action from the delete form.
-        //
-        // Steps:
-        //   1. Get topicid from the hidden form field
-        //   2. Parse to int
-        //   3. Call topicDao.deleteTopic(topicId)
-        //   4. Redirect to the topic list
-        //
-        // CONCEPT: Delete uses POST (not GET) because it modifies
-        // data. Browsers only support GET and POST in HTML forms —
-        // there is no DELETE method in forms. The hidden input
-        // name="action" value="delete" tells the servlet which
-        // operation to perform.
-        //
-        // The database has ON DELETE CASCADE on the entries table,
-        // so deleting a topic automatically deletes all its entries.
-        //
-        // The complete code:
-        //
-        //   else if ("delete".equals(action)) {
-        //       int topicId = Integer.parseInt(request.getParameter("topicid"));
-        //       topicDao.deleteTopic(topicId);
-        //       response.sendRedirect(request.getContextPath() + "/topic");
-        //   }
-        //
-        // ============================================================
-        else if ("delete".equals(action)) {
-            int topicId = Integer.parseInt(request.getParameter("topicid"));
-            topicDao.deleteTopic(topicId);
-            response.sendRedirect(request.getContextPath() + "/topic");
-        }
-    }
-}
+    // ============================================================
+    // TODO 12: doPost — Delete Topic
+    // ============================================================
+    // Handle the "delete" action from the delete form.
+    //
+    // Steps:
+    //   1. Get topicid from the hidden form field
+    //   2. Parse to int
+    //   3. Call topicDao.deleteTopic(topicId)
+    //   4. Redirect to the topic list
+    //
+    // CONCEPT: Delete uses POST (not GET) because it modifies
+    // data. Browsers only support GET and POST in HTML forms —
+    // there is no DELETE method in forms. The hidden input
+    // name="action" value="delete" tells the servlet which
+    // operation to perform.
+    //
+    // The database has ON DELETE CASCADE on the entries table,
+    // so deleting a topic automatically deletes all its entries.
+    //
+    // The complete code:
+    //
+    //   else if ("delete".equals(action)) {
+    //       int topicId = Integer.parseInt(request.getParameter("topicid"));
+    //       topicDao.deleteTopic(topicId);
+    //       response.sendRedirect(request.getContextPath() + "/topic");
+    //   }
+    //
+    // ============================================================

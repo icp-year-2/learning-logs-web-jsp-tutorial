@@ -37,7 +37,4 @@ public interface TopicDao {
     //   boolean deleteTopic(int id);
     //
     // ============================================================
-    Topic findTopicById(int id);
-    boolean updateTopic(Topic topic);
-    boolean deleteTopic(int id);
 }
