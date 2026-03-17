@@ -207,7 +207,7 @@ learning-logs-web-jsp-tutorial/
 ### Prerequisites
 
 - **XAMPP** running (MySQL + Tomcat)
-- **IntelliJ IDEA** with Maven support
+- **IntelliJ IDEA Ultimate** (has built-in JSP, JSTL, and Servlet support)
 - **Java 25** installed
 
 ### Setup Database
