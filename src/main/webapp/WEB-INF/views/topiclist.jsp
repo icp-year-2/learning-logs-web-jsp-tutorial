@@ -90,12 +90,12 @@
 
        Wireframe: See wireframes/topic-list.png
        ============================================================ --%>
-  <%-- TODO 2: Add <head>, <header>, and <nav> here --%>
+  <%-- TODO 2: Add <head> section here (before <body>) --%>
 
   <body>
     <div class="page">
 
-      <%-- TODO 2: Add header and navbar here --%>
+      <%-- TODO 2: Add <header> and <nav> here (inside div.page) --%>
 
       <%-- ============================================================
            TODO 3: Dynamic Content — Search + JSTL forEach Loop

@@ -78,12 +78,12 @@
 
        Wireframe: See wireframes/topic-add.png
        ============================================================ --%>
-  <%-- TODO 5: Add <head>, <header>, and <nav> here --%>
+  <%-- TODO 5: Add <head> section here (before <body>) --%>
 
   <body>
     <div class="page">
 
-      <%-- TODO 5: Add header and navbar here --%>
+      <%-- TODO 5: Add <header> and <nav> here (inside div.page) --%>
 
       <%-- ============================================================
            TODO 6: Form Content with EL Expressions
