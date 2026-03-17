@@ -249,9 +249,39 @@ Unlike Week 3 where you could right-click HTML files to open in browser, JSP fil
 | ClassNotFoundException: JSTL | JSTL not in WAR | Run `mvn clean package`, check JSTL jars in `WEB-INF/lib/` |
 | CSS not loading | Wrong contextPath | Check `${pageContext.request.contextPath}` in CSS links |
 | Empty topic list | Database not set up | Run `sql/learninglog.sql` + `sql/seed.sql` in phpMyAdmin |
-| No suitable driver found | MySQL driver not loaded by Tomcat | Add `Class.forName("com.mysql.cj.jdbc.Driver")` in a static block in `DatabaseConnection.java`. Tomcat's classloader doesn't auto-discover JDBC drivers like standalone Java apps — you need to load it explicitly |
+| No suitable driver found | MySQL driver not loaded by Tomcat | Already fixed — see below |
 | 405 Method Not Allowed | Missing doPost/doGet | Make sure both methods are implemented in the servlet |
 | Form data not received | Missing `name` attribute | Check `<input name="topic">` has the name attribute |
+
+### Why `DatabaseConnection.java` Changed from Week 2
+
+In Week 2, your app ran as a **standalone Java program** (`main()` method). Java's `ServiceLoader` automatically discovered the MySQL JDBC driver from the JAR on the classpath — `DriverManager.getConnection()` just worked.
+
+In Week 4, your app runs inside **Tomcat** (a web server). Tomcat uses its own classloader, which **does not** auto-discover JDBC drivers bundled in your WAR's `WEB-INF/lib/`. Without the driver being loaded, `DriverManager` has no idea how to connect to MySQL.
+
+**Week 2 (worked without driver loading):**
+```java
+public static Connection getConnection() throws SQLException {
+    return DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+}
+```
+
+**Week 4 (added static block to load the driver explicitly):**
+```java
+static {
+    try {
+        Class.forName("com.mysql.cj.jdbc.Driver");
+    } catch (ClassNotFoundException e) {
+        System.out.println("MySQL Driver not found: " + e.getMessage());
+    }
+}
+
+public static Connection getConnection() throws SQLException {
+    return DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+}
+```
+
+`Class.forName("com.mysql.cj.jdbc.Driver")` forces Java to load the driver class, which registers itself with `DriverManager`. The `static` block runs once when the class is first used — before any `getConnection()` call.
 
 ---
 
