@@ -249,6 +249,7 @@ Unlike Week 3 where you could right-click HTML files to open in browser, JSP fil
 | ClassNotFoundException: JSTL | JSTL not in WAR | Run `mvn clean package`, check JSTL jars in `WEB-INF/lib/` |
 | CSS not loading | Wrong contextPath | Check `${pageContext.request.contextPath}` in CSS links |
 | Empty topic list | Database not set up | Run `sql/learninglog.sql` + `sql/seed.sql` in phpMyAdmin |
+| No suitable driver found | MySQL driver not loaded by Tomcat | Add `Class.forName("com.mysql.cj.jdbc.Driver")` in a static block in `DatabaseConnection.java`. Tomcat's classloader doesn't auto-discover JDBC drivers like standalone Java apps — you need to load it explicitly |
 | 405 Method Not Allowed | Missing doPost/doGet | Make sure both methods are implemented in the servlet |
 | Form data not received | Missing `name` attribute | Check `<input name="topic">` has the name attribute |
 
