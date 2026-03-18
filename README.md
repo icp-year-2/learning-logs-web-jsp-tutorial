@@ -109,8 +109,11 @@ if (action == null) {
 ```
 
 - `fetchAllTopics()` → DAO runs the SQL query, returns 5 topics
-- `setAttribute("topics", topics)` → attaches the list to the request so the JSP can read it
-- `forward()` → passes the request to `topiclist.jsp` for rendering (URL stays `/topic`)
+- `setAttribute("topics", topics)` → attaches the list to the request so the JSP can read it via `${topics}`
+- `getRequestDispatcher(path)` → gets a dispatcher that knows where the JSP is. JSPs inside `WEB-INF/` cannot be accessed directly by the browser — only server-side code can reach them through the dispatcher
+- `.forward(request, response)` → hands off the request **completely** to the JSP. The servlet is done — the JSP takes over, renders HTML, and sends the response. The browser URL stays `/topic`
+
+> **`forward()` vs `include()`:** `forward()` transfers control completely — code after it does not run. `include()` temporarily inserts a JSP's output and returns control back to the servlet. We use `forward()` because our JSPs are complete pages, not reusable fragments.
 
 **5. JSP renders HTML**
 
