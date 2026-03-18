@@ -75,6 +75,47 @@ These files are **provided and complete** — no changes needed:
 
 ### How a Request Flows
 
+When you visit `http://localhost:8080/learning-logs/`, here's what happens step by step:
+
+**1. `web.xml` catches the root URL**
+
+```xml
+<welcome-file>topic</welcome-file>
+```
+
+Tomcat sees `/learning-logs/` (no specific page) and forwards internally to `/learning-logs/topic`.
+
+**2. `@WebServlet("/topic")` matches the URL**
+
+Tomcat finds `TopicServlet` because its annotation matches `/topic`. Since the browser is visiting a page (not submitting a form), it's a **GET** request → Tomcat calls `doGet()`.
+
+**3. `doGet()` checks the `action` parameter**
+
+```java
+String action = request.getParameter("action");  // reads ?action=xxx from URL
+```
+
+The URL is just `/topic` with no `?action=...`, so `action` is `null`.
+
+**4. `action == null` → fetch and display topics**
+
+```java
+if (action == null) {
+    ArrayList<Topic> topics = topicDao.fetchAllTopics();  // SQL: SELECT * FROM topics
+    request.setAttribute("topics", topics);                // attach list to request
+    request.getRequestDispatcher("/WEB-INF/views/topiclist.jsp")
+           .forward(request, response);                    // hand off to JSP
+}
+```
+
+- `fetchAllTopics()` → DAO runs the SQL query, returns 5 topics
+- `setAttribute("topics", topics)` → attaches the list to the request so the JSP can read it
+- `forward()` → passes the request to `topiclist.jsp` for rendering (URL stays `/topic`)
+
+**5. JSP renders HTML**
+
+The JSP reads `${topics}` via EL, loops with `<c:forEach>`, and outputs plain HTML. The browser receives only HTML — no Java code visible.
+
 ```mermaid
 flowchart LR
     Browser -->|GET /topic| Servlet
@@ -85,6 +126,21 @@ flowchart LR
     Servlet -->|setAttribute + forward| JSP
     JSP -->|HTML Response| Browser
 ```
+
+### How Different Actions Are Routed
+
+All topic requests go to the **same servlet** (`/topic`). The `action` parameter decides what happens:
+
+| URL / Form | `action` value | Method | What Happens |
+|-----------|---------------|--------|-------------|
+| `/topic` | `null` | GET | Fetch all topics → forward to `topiclist.jsp` |
+| `/topic?action=new` | `"new"` | GET | Forward to empty `topicadd.jsp` form |
+| `/topic?action=edit&topicid=1` | `"edit"` | GET | Find topic #1 → forward to pre-filled form |
+| Form submit with `action=add` | `"add"` | POST | Validate → insert → redirect to `/topic` |
+| Form submit with `action=edit` | `"edit"` | POST | Validate → update → redirect to `/topic` |
+| Form submit with `action=delete` | `"delete"` | POST | Delete topic → redirect to `/topic` |
+
+> **Pattern:** GET requests **forward** to a JSP (show a page). POST requests **redirect** back to the list after success (Post-Redirect-Get pattern).
 
 ### GET vs POST Flow
 
