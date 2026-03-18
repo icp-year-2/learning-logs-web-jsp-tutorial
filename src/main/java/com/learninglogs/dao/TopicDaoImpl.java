@@ -241,6 +241,56 @@ public class TopicDaoImpl implements TopicDao {
         }
     }
 
+    // ============================================================
+    // TODO 15: Implement Search Topics
+    // ============================================================
+    // Implement the searchTopics method to find topics by keyword.
+    //
+    // Steps:
+    //   1. Get connection
+    //   2. SQL: SELECT * FROM topics WHERE LOWER(name) LIKE LOWER(?)
+    //   3. Set parameter with wildcards: "%" + keyword + "%"
+    //   4. Execute query and build ArrayList<Topic>
+    //   5. Close connection in finally block
+    //
+    // CONCEPTS:
+    // - SQL LIKE with % wildcards matches partial text:
+    //   "Py" matches "Python", "PyGame", etc.
+    // - LOWER() on both sides makes the search case-insensitive:
+    //   searching "py" finds "Python"
+    // - This follows the same pattern as fetchAllTopics() but with
+    //   a WHERE clause to filter results.
+    //
+    // The complete code:
+    //
+    //   @Override
+    //   public ArrayList<Topic> searchTopics(String keyword) {
+    //       ArrayList<Topic> topics = new ArrayList<>();
+    //       Connection conn = null;
+    //       try {
+    //           conn = DatabaseConnection.getConnection();
+    //           String sql = "SELECT * FROM topics WHERE LOWER(name) LIKE LOWER(?)";
+    //           PreparedStatement statement = conn.prepareStatement(sql);
+    //           statement.setString(1, "%" + keyword + "%");
+    //           ResultSet rs = statement.executeQuery();
+    //           while (rs.next()) {
+    //               Topic topic = new Topic(
+    //                   rs.getInt("id"),
+    //                   rs.getString("name"),
+    //                   rs.getTimestamp("created_at"),
+    //                   rs.getTimestamp("updated_at")
+    //               );
+    //               topics.add(topic);
+    //           }
+    //       } catch (SQLException e) {
+    //           System.out.println("Error searching topics: " + e.getMessage());
+    //       } finally {
+    //           DatabaseConnection.closeConnection(conn);
+    //       }
+    //       return topics;
+    //   }
+    //
+    // ============================================================
     @Override
     public ArrayList<Topic> searchTopics(String keyword) {
         ArrayList<Topic> topics = new ArrayList<>();
