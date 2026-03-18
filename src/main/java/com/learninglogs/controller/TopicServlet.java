@@ -22,6 +22,7 @@ import java.util.ArrayList;
  *   (default)      -> list all topics   -> topiclist.jsp
  *   ?action=new    -> show add form     -> topicadd.jsp
  *   ?action=edit   -> show edit form    -> topicadd.jsp (pre-filled)
+ *   ?action=search -> search topics     -> topiclist.jsp (filtered)
  *
  * POST actions:
  *   action=add     -> insert new topic  -> redirect to /topic
@@ -64,7 +65,7 @@ import java.util.ArrayList;
 //
 //           String action = request.getParameter("action");
 //
-//           // TODOs 8-9 go here (inside doGet)
+//           // TODOs 8-9, 15 go here (inside doGet)
 //       }
 //   }
 //
@@ -134,6 +135,42 @@ import java.util.ArrayList;
     //       Topic topic = topicDao.findTopicById(topicId);
     //       request.setAttribute("topic", topic);
     //       request.getRequestDispatcher("/WEB-INF/views/topicadd.jsp")
+    //              .forward(request, response);
+    //   }
+    //
+    // ============================================================
+
+    // ============================================================
+    // TODO 15: doGet — Search Topics
+    // ============================================================
+    // Handle the "search" action from the search form on topiclist.jsp.
+    //
+    // Steps:
+    //   1. Get the "search" parameter (the keyword typed by the user)
+    //   2. If keyword is null or blank, show all topics (fetchAllTopics)
+    //   3. Otherwise, call topicDao.searchTopics(keyword) for filtered results
+    //   4. Store the results: setAttribute("topics", topics)
+    //   5. Store the keyword: setAttribute("searchKeyword", keyword)
+    //      so the search input keeps showing what the user searched for
+    //   6. Forward to topiclist.jsp
+    //
+    // CONCEPT: The search form uses GET (not POST) because searching
+    // is a read-only operation — it doesn't change data. The search
+    // keyword appears in the URL: /topic?action=search&search=Python
+    //
+    // The complete code:
+    //
+    //   else if ("search".equals(action)) {
+    //       String keyword = request.getParameter("search");
+    //       ArrayList<Topic> topics;
+    //       if (keyword == null || keyword.trim().isEmpty()) {
+    //           topics = topicDao.fetchAllTopics();
+    //       } else {
+    //           topics = topicDao.searchTopics(keyword.trim());
+    //       }
+    //       request.setAttribute("topics", topics);
+    //       request.setAttribute("searchKeyword", keyword);
+    //       request.getRequestDispatcher("/WEB-INF/views/topiclist.jsp")
     //              .forward(request, response);
     //   }
     //
