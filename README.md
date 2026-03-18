@@ -323,7 +323,7 @@ learning-logs.war (built by Maven — you don't create this manually)
 | **`jakarta.servlet.jsp.jstl-api`** | — | **New** | JSTL tags: `<c:forEach>`, `<c:if>` |
 | **`jakarta.servlet.jsp.jstl`** | — | **New** | JSTL implementation (Glassfish) — the actual runtime |
 
-> **What does `provided` mean?** Tomcat already includes the Servlet and JSP APIs. Marking them `provided` means Maven uses them for compilation but does **not** bundle them into the WAR's `WEB-INF/lib/` — Tomcat provides them at runtime. Without `provided`, you'd get version conflicts.
+> **What does `provided` mean?** Think of it like packing a suitcase for a hotel stay. Regular dependencies (like `mysql-connector-j`) are things the hotel doesn't have — you must pack them yourself (Maven puts them in `WEB-INF/lib/`). But `provided` dependencies (like `jakarta.servlet-api`) are things the hotel already has — towels, soap. You need to know their size while packing (compilation), but you don't bring them — the hotel provides them when you arrive (runtime). If you packed your own towels AND the hotel gave you towels, you'd have two conflicting sets — same thing happens with duplicate JARs on the classpath.
 
 ### Plugins — What Changed from Week 3
 
