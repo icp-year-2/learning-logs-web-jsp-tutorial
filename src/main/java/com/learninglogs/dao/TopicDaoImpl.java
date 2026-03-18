@@ -240,4 +240,31 @@ public class TopicDaoImpl implements TopicDao {
             DatabaseConnection.closeConnection(conn);
         }
     }
+
+    @Override
+    public ArrayList<Topic> searchTopics(String keyword) {
+        ArrayList<Topic> topics = new ArrayList<>();
+        Connection conn = null;
+        try {
+            conn = DatabaseConnection.getConnection();
+            String sql = "SELECT * FROM topics WHERE LOWER(name) LIKE LOWER(?)";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setString(1, "%" + keyword + "%");
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                Topic topic = new Topic(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getTimestamp("created_at"),
+                    rs.getTimestamp("updated_at")
+                );
+                topics.add(topic);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error searching topics: " + e.getMessage());
+        } finally {
+            DatabaseConnection.closeConnection(conn);
+        }
+        return topics;
+    }
 }

@@ -40,4 +40,5 @@ public interface TopicDao {
     Topic findTopicById(int id);
     boolean updateTopic(Topic topic);
     boolean deleteTopic(int id);
+    ArrayList<Topic> searchTopics(String keyword);
 }

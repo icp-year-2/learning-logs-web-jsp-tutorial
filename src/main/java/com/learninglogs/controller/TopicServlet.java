@@ -166,6 +166,19 @@ public class TopicServlet extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/views/topicadd.jsp")
                    .forward(request, response);
         }
+        else if ("search".equals(action)) {
+            String keyword = request.getParameter("search");
+            ArrayList<Topic> topics;
+            if (keyword == null || keyword.trim().isEmpty()) {
+                topics = topicDao.fetchAllTopics();
+            } else {
+                topics = topicDao.searchTopics(keyword.trim());
+            }
+            request.setAttribute("topics", topics);
+            request.setAttribute("searchKeyword", keyword);
+            request.getRequestDispatcher("/WEB-INF/views/topiclist.jsp")
+                   .forward(request, response);
+        }
     }
 
     // ============================================================

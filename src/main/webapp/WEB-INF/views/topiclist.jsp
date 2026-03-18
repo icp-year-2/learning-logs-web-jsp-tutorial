@@ -162,7 +162,7 @@
                  <form action="${pageContext.request.contextPath}/topic" method="get">
                    <input type="hidden" name="action" value="search" />
                    <label for="search">Topic: </label>
-                   <input type="text" name="search" placeholder="Search..." />
+                   <input type="text" name="search" placeholder="Search..." value="${searchKeyword}" />
                    <button type="submit">SEARCH</button>
                  </form>
                </div>
@@ -191,7 +191,7 @@
           <form action="${pageContext.request.contextPath}/topic" method="get">
             <input type="hidden" name="action" value="search" />
             <label for="search">Topic: </label>
-            <input type="text" name="search" placeholder="Search..." />
+            <input type="text" name="search" placeholder="Search..." value="${searchKeyword}" />
             <button type="submit">SEARCH</button>
           </form>
         </div>
