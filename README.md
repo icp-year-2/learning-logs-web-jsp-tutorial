@@ -293,28 +293,45 @@ In Weeks 1–3, the project was a **standalone Java app** — it had a `main()` 
 <packaging>war</packaging>
 ```
 
-A `.war` file is like a `.jar` but structured for web servers — it contains your compiled classes, JSP files, CSS, images, and all dependency JARs bundled in `WEB-INF/lib/`.
+A `.war` file is like a `.jar` but structured for web servers. When Maven builds the WAR, it creates this structure inside it:
 
-### New Dependencies
+```
+learning-logs.war (built by Maven — you don't create this manually)
+├── static/                       Your CSS, images, JS (from webapp/)
+├── WEB-INF/
+│   ├── classes/                  Your compiled .java files
+│   │   └── com/learninglogs/...
+│   ├── lib/                      Maven puts dependency JARs here automatically
+│   │   ├── mysql-connector-j-9.2.0.jar
+│   │   ├── jakarta.servlet.jsp.jstl-3.0.1.jar
+│   │   └── ...
+│   ├── views/                    Your JSP files
+│   │   ├── topiclist.jsp
+│   │   └── topicadd.jsp
+│   └── web.xml
+```
 
-| Dependency | What It Does | Scope |
-|------------|-------------|-------|
-| `mysql-connector-j` | MySQL JDBC driver (same as Week 2) | runtime |
-| **`jakarta.servlet-api`** | `HttpServlet`, `@WebServlet`, `HttpServletRequest` | `provided` — Tomcat has this |
-| **`jakarta.servlet.jsp-api`** | JSP compilation support | `provided` — Tomcat has this |
-| **`jakarta.servlet.jsp.jstl-api`** | JSTL tags: `<c:forEach>`, `<c:if>` | runtime |
-| **`jakarta.servlet.jsp.jstl`** | JSTL implementation (Glassfish) | runtime |
+> **Note:** The `WEB-INF/lib/` folder does **not** exist in your source code — you never manage it. Maven reads your `pom.xml` dependencies and bundles the JARs into `WEB-INF/lib/` at build time. This is why you only see dependency JARs inside the built WAR, not in your project folder.
 
-> **What does `provided` mean?** Tomcat already includes the Servlet and JSP APIs. Marking them `provided` means Maven uses them for compilation but does **not** bundle them into the WAR — Tomcat provides them at runtime. Without `provided`, you'd get version conflicts.
+### Dependencies — What Changed from Week 3
 
-### New Plugins
+| Dependency | Week 3 | Week 4 | Why |
+|------------|--------|--------|-----|
+| `mysql-connector-j` | Yes | Yes | Same MySQL driver — still connects to `learning_logs` database |
+| **`jakarta.servlet-api`** | — | **New** (`provided`) | Provides `HttpServlet`, `@WebServlet`, `HttpServletRequest` |
+| **`jakarta.servlet.jsp-api`** | — | **New** (`provided`) | JSP compilation support |
+| **`jakarta.servlet.jsp.jstl-api`** | — | **New** | JSTL tags: `<c:forEach>`, `<c:if>` |
+| **`jakarta.servlet.jsp.jstl`** | — | **New** | JSTL implementation (Glassfish) — the actual runtime |
 
-| Plugin | Replaces | What It Does |
-|--------|----------|-------------|
-| **`maven-war-plugin`** | (default jar plugin) | Packages the project as a `.war` file |
-| **`cargo-maven3-plugin`** | (nothing — new) | Downloads and runs Tomcat automatically |
+> **What does `provided` mean?** Tomcat already includes the Servlet and JSP APIs. Marking them `provided` means Maven uses them for compilation but does **not** bundle them into the WAR's `WEB-INF/lib/` — Tomcat provides them at runtime. Without `provided`, you'd get version conflicts.
 
-Week 3 used `exec-maven-plugin` to run `main()`. Week 4 removes it — there's no `main()` method in a web app.
+### Plugins — What Changed from Week 3
+
+| Plugin | Week 3 | Week 4 | What It Does |
+|--------|--------|--------|-------------|
+| `exec-maven-plugin` | Yes | **Removed** | Week 3: ran `main()`. Week 4: no `main()` in a web app |
+| **`maven-war-plugin`** | — | **New** | Packages the project as a `.war` file |
+| **`cargo-maven3-plugin`** | — | **New** | Downloads and runs Tomcat 10.1 automatically |
 
 ### No Separate Tomcat Install Needed
 
@@ -499,7 +516,7 @@ Check off each task as you complete it:
 |---------|-------|-----|
 | 404 Not Found | WAR not deployed or wrong URL | Run `mvn clean package cargo:run`, visit `/learning-logs/` |
 | 500 Internal Server Error | Java exception in servlet | Check terminal output for stack trace |
-| ClassNotFoundException: JSTL | JSTL not in WAR | Run `mvn clean package` — Maven bundles JSTL jars into the WAR automatically |
+| ClassNotFoundException: JSTL | JSTL not in WAR | Run `mvn clean package` and check that JSTL dependencies are in `pom.xml` — Maven bundles them into the WAR's `WEB-INF/lib/` automatically |
 | CSS not loading | Wrong contextPath | Check `${pageContext.request.contextPath}` in CSS links |
 | Empty topic list | Database not set up | Run `sql/learninglog.sql` + `sql/seed.sql` in phpMyAdmin |
 | No suitable driver found | MySQL driver not loaded by Tomcat | Already fixed — see [why it changed](#why-databaseconnectionjava-changed-from-week-2) |
