@@ -260,7 +260,6 @@ learning-logs-web-jsp-tutorial/
 | 10 | Add Topic (doPost) | Validate, insertTopic, redirect/forward |
 | 11 | Edit Topic (doPost) | Parse topicid, validate, updateTopic, redirect |
 | 12 | Delete Topic (doPost) | Parse topicid, deleteTopic, redirect |
-
 | 15 | Search Topics (doGet) | action=search: searchTopics, setAttribute, forward |
 
 ### Java — DAO Implementation (`dao/TopicDaoImpl.java`)
