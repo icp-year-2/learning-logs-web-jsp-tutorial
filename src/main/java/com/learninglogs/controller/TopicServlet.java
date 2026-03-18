@@ -70,6 +70,7 @@ import java.util.ArrayList;
 //   }
 //
 // ============================================================
+@WebServlet("/topic")
 public class TopicServlet extends HttpServlet {
 
     @Override
