@@ -36,6 +36,7 @@ flowchart LR
     end
     subgraph "Week 4: Workshop"
         I[EntryServlet] --> J[Entry JSPs]
+        I --> H
     end
     C -.->|"replaced by"| F
     E -.->|"converted to"| G
