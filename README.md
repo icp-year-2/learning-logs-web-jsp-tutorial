@@ -139,6 +139,7 @@ All topic requests go to the **same servlet** (`/topic`). The `action` parameter
 | `/topic` | `null` | GET | Fetch all topics → forward to `topiclist.jsp` |
 | `/topic?action=new` | `"new"` | GET | Forward to empty `topicadd.jsp` form |
 | `/topic?action=edit&topicid=1` | `"edit"` | GET | Find topic #1 → forward to pre-filled form |
+| `/topic?action=search&search=Py` | `"search"` | GET | Search topics by keyword → forward to `topiclist.jsp` (filtered) |
 | Form submit with `action=add` | `"add"` | POST | Validate → insert → redirect to `/topic` |
 | Form submit with `action=edit` | `"edit"` | POST | Validate → update → redirect to `/topic` |
 | Form submit with `action=delete` | `"delete"` | POST | Delete topic → redirect to `/topic` |
@@ -260,12 +261,14 @@ learning-logs-web-jsp-tutorial/
 | 11 | Edit Topic (doPost) | Parse topicid, validate, updateTopic, redirect |
 | 12 | Delete Topic (doPost) | Parse topicid, deleteTopic, redirect |
 
-### Java — DAO Updates (`dao/TopicDao.java` + `TopicDaoImpl.java`)
+| 15 | Search Topics (doGet) | action=search: searchTopics, setAttribute, forward |
+
+### Java — DAO Implementation (`dao/TopicDaoImpl.java`)
 
 | # | Title | What You Build |
 |---|-------|---------------|
-| 13 | New DAO Signatures | findTopicById, updateTopic, deleteTopic |
-| 14 | New DAO Methods | Implement findById, update, delete with JDBC |
+| 13 | New DAO Methods | Implement findById, update, delete with JDBC |
+| 14 | Search Topics | Implement searchTopics with SQL `LIKE` query |
 
 ---
 
@@ -531,6 +534,10 @@ Unlike Week 3 where you could right-click HTML files to open in browser, JSP fil
 | 13 | Check URL after adding topic | URL is `/learning-logs/topic` (redirect, not `/topic?action=add`) |
 | 14 | Refresh page after adding | No "resubmit form?" dialog (Post-Redirect-Get works) |
 | 15 | View page source in browser | No Java code visible — only rendered HTML |
+| 16 | Search "Py" in search bar | Only "Python" shows in the list |
+| 17 | Search with empty input | All topics shown (same as default list) |
+| 18 | Search "xyz" (no match) | Empty list — no topics displayed |
+| 19 | After search, check input field | Search keyword "Py" still visible in the search input |
 
 ---
 
@@ -553,10 +560,11 @@ Check off each task as you complete it:
 - [ ] **TODO 10** — TopicServlet: Add topic (validate → insert → redirect/forward)
 - [ ] **TODO 11** — TopicServlet: Edit topic (parse id → validate → update → redirect)
 - [ ] **TODO 12** — TopicServlet: Delete topic (parse id → delete → redirect)
+- [ ] **TODO 15** — TopicServlet: Search topics (searchTopics → setAttribute → forward)
 
 ### DAO
-- [ ] **TODO 13** — TopicDao: Add findTopicById, updateTopic, deleteTopic signatures
-- [ ] **TODO 14** — TopicDaoImpl: Implement findById, update, delete with PreparedStatement
+- [ ] **TODO 13** — TopicDaoImpl: Implement findById, update, delete with PreparedStatement
+- [ ] **TODO 14** — TopicDaoImpl: Implement searchTopics with SQL `LIKE` query
 
 ### Final Checks
 - [ ] `mvn clean package` builds without errors
@@ -568,6 +576,8 @@ Check off each task as you complete it:
 - [ ] URL stays `/topic` after forward (list page, add form)
 - [ ] URL changes to `/topic` after redirect (successful add/edit/delete)
 - [ ] No "resubmit form?" on refresh after POST operations
+- [ ] Search filters topics by keyword, empty search shows all topics
+- [ ] Search input retains the keyword after searching
 
 ---
 

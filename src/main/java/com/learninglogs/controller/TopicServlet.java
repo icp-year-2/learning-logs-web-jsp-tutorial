@@ -65,7 +65,7 @@ import java.util.ArrayList;
 //
 //           String action = request.getParameter("action");
 //
-//           // TODOs 8-9 go here (inside doGet)
+//           // TODOs 8-9, 15 go here (inside doGet)
 //       }
 //   }
 //
@@ -168,7 +168,7 @@ public class TopicServlet extends HttpServlet {
                    .forward(request, response);
         }
         // ============================================================
-        // TODO 16: doGet — Search Topics
+        // TODO 15: doGet — Search Topics
         // ============================================================
         // Handle the "search" action from the search form on topiclist.jsp.
         //

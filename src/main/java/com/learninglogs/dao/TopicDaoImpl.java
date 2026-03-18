@@ -91,7 +91,7 @@ public class TopicDaoImpl implements TopicDao {
     }
 
     // ============================================================
-    // TODO 14: Implement New DAO Methods
+    // TODO 13: Implement New DAO Methods
     // ============================================================
     // Implement the THREE new methods you declared in TopicDao.
     // Follow the same JDBC pattern as the existing methods above:
@@ -242,7 +242,7 @@ public class TopicDaoImpl implements TopicDao {
     }
 
     // ============================================================
-    // TODO 15: Implement Search Topics
+    // TODO 14: Implement Search Topics
     // ============================================================
     // Implement the searchTopics method to find topics by keyword.
     //
