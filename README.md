@@ -51,7 +51,8 @@ These files are **provided and complete** — no changes needed:
 | Layer | Files | From |
 |-------|-------|------|
 | Entity | `Topic.java`, `Entry.java` | Week 2 (Entry updated with title, link, image) |
-| DAO | `TopicDao.java`, `TopicDaoImpl.java`, `EntryDao.java`, `EntryDaoImpl.java` | Week 2 |
+| DAO Interface | `TopicDao.java`, `EntryDao.java` | Week 2 (TopicDao updated with new signatures) |
+| DAO Provided | `EntryDaoImpl.java` | Week 2 |
 | Database | `DatabaseConnection.java` | Week 2 (updated — see [why it changed](#why-databaseconnectionjava-changed-from-week-2)) |
 | CSS | `main.css`, `topic-list.css`, `topic-add.css` | Week 3 |
 | Database Schema | `sql/learninglog.sql`, `sql/seed.sql` | Week 2 (updated) |
@@ -63,11 +64,10 @@ These files are **provided and complete** — no changes needed:
 
 | File | What It Does |
 |------|-------------|
-| `TopicServlet.java` | Handles all topic HTTP requests (list, add, edit, delete) |
+| `TopicServlet.java` | Handles all topic HTTP requests (list, add, edit, delete, search) |
 | `topiclist.jsp` | Displays topics dynamically using JSTL forEach + EL |
 | `topicadd.jsp` | Add/edit form with error handling using JSTL + EL |
-| `TopicDao.java` | Add 3 new method signatures (findById, update, delete) |
-| `TopicDaoImpl.java` | Implement the 3 new DAO methods |
+| `TopicDaoImpl.java` | Implement 4 new DAO methods (findById, update, delete, search) |
 
 ---
 
@@ -207,13 +207,13 @@ learning-logs-web-jsp-tutorial/
 ├── src/main/
 │   ├── java/com/learninglogs/
 │   │   ├── controller/
-│   │   │   └── TopicServlet.java              ★ TODOs 7-12
+│   │   │   └── TopicServlet.java              ★ TODOs 7-12, 15
 │   │   ├── entity/
 │   │   │   ├── Topic.java                     Provided
 │   │   │   └── Entry.java                     Provided (updated)
 │   │   ├── dao/
-│   │   │   ├── TopicDao.java                  ★ TODO 13
-│   │   │   ├── TopicDaoImpl.java              ★ TODO 14
+│   │   │   ├── TopicDao.java                  Provided (updated)
+│   │   │   ├── TopicDaoImpl.java              ★ TODOs 13-14
 │   │   │   ├── EntryDao.java                  Provided
 │   │   │   └── EntryDaoImpl.java              Provided
 │   │   └── utils/
@@ -444,7 +444,8 @@ Open this project in **IntelliJ IDEA** (File → Open → select the project fol
 Before writing code, understand the patterns:
 
 - **`DatabaseConnection.java`** — Same as Week 2, but with a `static` block to load the MySQL driver ([why?](#why-databaseconnectionjava-changed-from-week-2))
-- **`TopicDao.java` + `TopicDaoImpl.java`** — You know these from Week 2. You'll add 3 new methods
+- **`TopicDao.java`** — Updated from Week 2 with 4 new method signatures already provided (findById, update, delete, search)
+- **`TopicDaoImpl.java`** — You know this from Week 2. You'll implement 4 new methods
 - **`main.css`, `topic-list.css`, `topic-add.css`** — Your Week 3 CSS, ready to use
 - **`web.xml`** — Configures the welcome page (points to `/topic`)
 - **`pom.xml`** — WAR packaging, Jakarta EE dependencies, and Cargo plugin (auto-downloads Tomcat)
@@ -455,7 +456,8 @@ Work through the TODOs in order. Each TODO comment block contains the complete c
 
 1. **TODOs 1-6** — JSP pages (`topiclist.jsp` + `topicadd.jsp`)
 2. **TODOs 7-12** — Servlet (`TopicServlet.java`)
-3. **TODOs 13-14** — DAO methods (`TopicDao.java` + `TopicDaoImpl.java`)
+3. **TODOs 13-14** — DAO implementation (`TopicDaoImpl.java`)
+4. **TODO 15** — Search handler (`TopicServlet.java`)
 
 ### Step 5: Build and Run
 
