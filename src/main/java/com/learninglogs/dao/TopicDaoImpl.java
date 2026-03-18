@@ -180,6 +180,21 @@ public class TopicDaoImpl implements TopicDao {
     //
     // ============================================================
 
+    @Override
+    public Topic findTopicById(int id) {
+        return null; // TODO 13: Implement this method
+    }
+
+    @Override
+    public boolean updateTopic(Topic topic) {
+        return false; // TODO 13: Implement this method
+    }
+
+    @Override
+    public boolean deleteTopic(int id) {
+        return false; // TODO 13: Implement this method
+    }
+
     // ============================================================
     // TODO 14: Implement Search Topics
     // ============================================================
@@ -230,4 +245,9 @@ public class TopicDaoImpl implements TopicDao {
     //   }
     //
     // ============================================================
+
+    @Override
+    public ArrayList<Topic> searchTopics(String keyword) {
+        return new ArrayList<>(); // TODO 14: Implement this method
+    }
 }

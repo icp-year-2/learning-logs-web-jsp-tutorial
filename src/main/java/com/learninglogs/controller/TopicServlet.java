@@ -70,6 +70,21 @@ import java.util.ArrayList;
 //   }
 //
 // ============================================================
+public class TopicServlet extends HttpServlet {
+
+    @Override
+    protected void doGet(HttpServletRequest request,
+                         HttpServletResponse response)
+            throws ServletException, IOException {
+        // TODO 8, 9, 15: Implement doGet action routing here
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request,
+                          HttpServletResponse response)
+            throws ServletException, IOException {
+        // TODO 10, 11, 12: Implement doPost action routing here
+    }
 
     // ============================================================
     // TODO 8: doGet — List All Topics (Default Action)
@@ -307,3 +322,4 @@ import java.util.ArrayList;
     //   }
     //
     // ============================================================
+}
