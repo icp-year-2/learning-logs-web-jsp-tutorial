@@ -310,7 +310,9 @@ Week 4:  Browser → Servlet → WEB-INF/views/topiclist.jsp  (servlet controls 
 - **`<c:if test="${not empty error}">`** — Conditional rendering
 - **`${topic.name}`** — EL expression, calls `topic.getName()` automatically
 - **`${empty topic ? 'Add' : 'Edit'}`** — EL ternary operator
-- **`${pageContext.request.contextPath}`** — Your app's base URL
+- **`${pageContext.request.contextPath}`** — Your app's base URL (returns `/learning-logs`)
+
+> **Where does `pageContext` come from?** It's a JSP **implicit object** — available automatically in every JSP page without any import or declaration. `pageContext.request` is the same `HttpServletRequest` the servlet forwarded, and `.contextPath` is your app's deploy path. This ensures links and form actions always point to the correct URL, even if the app is deployed under a different name.
 
 ### Forward vs Redirect
 
