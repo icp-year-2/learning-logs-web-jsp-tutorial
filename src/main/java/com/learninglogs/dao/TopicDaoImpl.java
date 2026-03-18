@@ -93,7 +93,7 @@ public class TopicDaoImpl implements TopicDao {
     // ============================================================
     // TODO 13: Implement New DAO Methods
     // ============================================================
-    // Implement the THREE new methods you declared in TopicDao.
+    // Implement the THREE new methods from TopicDao interface.
     // Follow the same JDBC pattern as the existing methods above:
     //   1. Get connection
     //   2. Prepare SQL with ? placeholders
